@@ -33,13 +33,15 @@ function App() {
 				<AnimatePresence>
 					{menuOpen && <Header.Menu onClose={() => setMenuOpen(false)} />}
 				</AnimatePresence>
-				<main id='main'>
-					<Hero />
-					<Philosophy />
-					<Projects />
-					<Company />
-				</main>
-				<Footer />
+				<div className={`page-content${menuOpen ? ' is-menu-opening' : ''}`}>
+					<main id='main'>
+						<Hero />
+						<Philosophy />
+						<Projects />
+						<Company />
+					</main>
+					<Footer />
+				</div>
 			</div>
 			<AnimatePresence>{loading && <PageIntro onComplete={finishLoading} />}</AnimatePresence>
 		</div>

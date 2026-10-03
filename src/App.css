@@ -90,6 +90,10 @@ img {
 .site-content.is-visible .hero-section {
 	animation: homepage-scale-in 1.9s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+.page-content.is-menu-opening {
+	transform-origin: center;
+	animation: page-content-menu-open 0.8s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
 .section-shell {
 	padding-inline: var(--page-gutter);
 }
@@ -194,6 +198,17 @@ img {
 	}
 }
 
+@keyframes page-content-menu-open {
+	from {
+		opacity: 1;
+		transform: scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+}
+
 .site-header {
 	position: fixed;
 	inset: 0 0 auto;
@@ -286,65 +301,132 @@ img {
 	font-family: inherit;
 	font-size: inherit;
 }
+.menu-trigger__labels {
+	display: grid;
+}
+.menu-trigger__labels > span {
+	grid-area: 1 / 1;
+}
 
 .menu-overlay {
 	position: fixed;
 	inset: 0;
 	z-index: 90;
 	display: grid;
-	grid-template-rows: 1fr auto;
-	padding: 11.25vw var(--page-gutter) 2.6vw;
+	grid-template-rows: 9.875vw 1fr auto;
+	padding-inline: 5vw;
+	background: transparent;
+}
+.menu-overlay__glass,
+.menu-overlay__ink {
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+}
+.menu-overlay__glass {
+	z-index: 0;
+	background: rgba(10, 8, 1, 0.08);
+	-webkit-backdrop-filter: blur(0) saturate(1);
+	backdrop-filter: blur(0) saturate(1);
+	animation: menu-glass-in 0.9s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+.menu-overlay__ink {
+	z-index: 1;
 	background: var(--ink);
+	animation: menu-ink-in 0.88s 0.72s cubic-bezier(0.33, 1, 0.68, 1) both;
 }
 .menu-overlay__body {
+	grid-row: 2;
 	position: relative;
-	display: block;
+	z-index: 2;
+	margin-top: 1.34375vw;
 	padding-left: 66.75vw;
+	animation: menu-surface-in 0.8s 0.8s cubic-bezier(0.33, 1, 0.68, 1) both;
 }
 .menu-overlay ul {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
-.menu-overlay li a {
+.menu-overlay__item > a {
 	display: inline-block;
+	position: relative;
 	padding: 0.9375vw 0.375vw;
 	font:
 		400 clamp(1.4rem, 1.875vw, 2.2rem)/1 'Cinzel',
 		serif;
 }
-.menu-overlay li:nth-child(3) {
-	margin-bottom: 6.2rem;
-}
-.menu-overlay li a:hover {
-	text-decoration: line-through;
+.menu-overlay__current-dot {
+	position: absolute;
+	top: 50%;
+	left: -2.5vw;
+	width: 0.25vw;
+	height: 0.25vw;
+	border-radius: 50%;
+	background: currentColor;
+	transform: translateY(-50%);
 }
 .menu-overlay__projects {
-	position: absolute;
-	top: 10.6rem;
-	left: 66.75vw;
-	display: flex;
-	flex-direction: column;
-	gap: 0.8rem;
+	display: grid;
+	grid-template:
+		'school school' auto
+		'craft space' auto
+		'retreat retreat' auto / auto 1fr;
+	column-gap: 1.375vw;
+	align-items: center;
+	margin-block: 0.4375vw;
+	margin-left: 0.28125vw;
 	font:
 		clamp(0.72rem, 0.875vw, 0.95rem)/1 'Cinzel',
 		serif;
 }
+.menu-overlay__projects li:nth-child(1) {
+	grid-area: school;
+}
+.menu-overlay__projects li:nth-child(2) {
+	grid-area: craft;
+}
+.menu-overlay__projects li:nth-child(3) {
+	grid-area: space;
+}
+.menu-overlay__projects li:nth-child(4) {
+	grid-area: retreat;
+}
 .menu-overlay__projects a {
+	display: inline-block;
 	width: max-content;
+	padding: 0.375vw;
+}
+.menu-overlay__projects .is-connected {
+	position: relative;
+	padding-left: 1.25vw;
+}
+.menu-overlay__projects .is-connected::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 0.375vw;
+	height: 1px;
+	background: currentColor;
 }
 .menu-overlay__footer {
+	grid-row: 3;
+	position: relative;
+	z-index: 2;
 	display: grid;
 	grid-template-columns: 15vw 15vw;
-	gap: 2rem;
+	margin-top: 6.25vw;
+	padding-bottom: 2.625vw;
 	font:
 		clamp(0.68rem, 0.85vw, 0.92rem)/1.65 'Cinzel',
 		serif;
+	animation: menu-surface-in 0.8s 0.8s cubic-bezier(0.33, 1, 0.68, 1) both;
 }
 .menu-overlay__privacy {
-	position: absolute;
-	bottom: 2.6vw;
-	left: 66.75vw;
+	position: fixed;
+	bottom: 2.625vw;
+	left: 67.03125vw;
 	font:
 		clamp(0.68rem, 0.85vw, 0.92rem)/1 'Cinzel',
 		serif;
@@ -354,7 +436,102 @@ img {
 }
 .menu-overlay address span {
 	display: block;
-	margin-bottom: 1rem;
+}
+.menu-overlay address span:first-child {
+	margin-bottom: 1.25vw;
+}
+.menu-reveal {
+	--menu-reveal-offset: 1.25vw;
+	opacity: 0;
+	animation: menu-element-in 1.4s var(--menu-delay) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.menu-flip {
+	display: inline-grid;
+	position: relative;
+	overflow: hidden;
+	padding-block: 0.1em;
+}
+.menu-flip__text {
+	grid-area: 1 / 1;
+	display: inline-flex;
+	align-items: center;
+	transform: translateY(0);
+	transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.menu-flip__text--clone {
+	transform: translateY(130%);
+}
+.menu-flip::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	background: currentColor;
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.menu-overlay a:hover .menu-flip__text:first-child,
+.menu-overlay a:focus-visible .menu-flip__text:first-child {
+	transform: translateY(-110%);
+}
+.menu-overlay a:hover .menu-flip__text--clone,
+.menu-overlay a:focus-visible .menu-flip__text--clone {
+	transform: translateY(0);
+}
+.menu-overlay a:hover .menu-flip::after,
+.menu-overlay a:focus-visible .menu-flip::after {
+	transform: scaleX(1);
+}
+
+@keyframes menu-glass-in {
+	from {
+		opacity: 0;
+		background: rgba(10, 8, 1, 0);
+		-webkit-backdrop-filter: blur(0) saturate(1);
+		backdrop-filter: blur(0) saturate(1);
+	}
+	to {
+		opacity: 1;
+		background: rgba(10, 8, 1, 0.58);
+		-webkit-backdrop-filter: blur(22px) saturate(0.58) contrast(0.88);
+		backdrop-filter: blur(22px) saturate(0.58) contrast(0.88);
+	}
+}
+
+@keyframes menu-ink-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes menu-surface-in {
+	from {
+		opacity: 0;
+		filter: blur(12px) saturate(0.55);
+		transform: translateX(1.1%) skewX(-2deg) scaleX(0.97);
+	}
+	to {
+		opacity: 1;
+		filter: blur(0) saturate(1);
+		transform: translateX(0) skewX(0) scaleX(1);
+	}
+}
+
+@keyframes menu-element-in {
+	from {
+		opacity: 0;
+		transform: translateX(var(--menu-reveal-offset));
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
 }
 
 .hero-section {
@@ -922,39 +1099,57 @@ img {
 		padding: 3.1vw 0.5vw;
 	}
 	.menu-overlay {
-		padding: 28vw 5.2vw 12.5vw;
+		grid-template-rows: 22.388vw 1fr auto;
+		height: 100svh;
+		padding-inline: 5.224vw;
+		overflow-y: auto;
 	}
 	.menu-overlay__body {
-		padding-left: 40%;
-	}
-	.menu-overlay li:nth-child(3) {
-		margin-bottom: 24vw;
+		margin-top: 5.846vw;
+		padding-left: 42.289vw;
 	}
 	.menu-overlay__projects {
-		top: 27vw;
-		left: 42.3vw;
-		gap: 2.5vw;
+		column-gap: 1.493vw;
+		margin-block: 0.746vw;
+		margin-left: 0.995vw;
+		font-size: 2.74vw;
 	}
 	.menu-overlay__privacy {
 		position: static;
 		display: block;
-		margin: 8vw 0 0 42.3vw;
+		width: max-content;
+		margin: 10.448vw 0 0 0.995vw;
 		font-size: 2.74vw;
 	}
-	.menu-overlay li a {
+	.menu-overlay__item > a {
 		padding: 2.49vw 1.24vw;
 		font-size: 5.97vw;
 	}
-	.menu-overlay__projects {
-		margin: 2vw 0 0 2vw;
-		gap: 2.5vw;
-		font-size: 2.74vw;
+	.menu-overlay__current-dot {
+		left: -37.313vw;
+		width: 0.995vw;
+		height: 0.995vw;
+	}
+	.menu-overlay__projects a {
+		padding: 1.244vw;
+	}
+	.menu-overlay__projects .is-connected {
+		padding-left: 3.731vw;
+	}
+	.menu-overlay__projects .is-connected::before {
+		width: 0.746vw;
 	}
 	.menu-overlay__footer {
+		margin-top: 12.935vw;
+		padding: 0 4.975vw 12.438vw;
 		grid-template-columns: repeat(2, 1fr);
-		gap: 6vw;
-		padding-inline: 5vw;
 		font-size: 2.5vw;
+	}
+	.menu-overlay address span:first-child {
+		margin-bottom: 3.483vw;
+	}
+	.menu-reveal {
+		--menu-reveal-offset: 5.224vw;
 	}
 	.hero-section {
 		height: 100svh;
@@ -1225,6 +1420,32 @@ img {
 	.site-content.is-visible .hero-section {
 		transform: none;
 		animation: none;
+	}
+	.page-content.is-menu-opening {
+		opacity: 0;
+		transform: none;
+		animation: none;
+	}
+	.menu-reveal {
+		opacity: 1;
+		transform: none;
+		animation: none;
+	}
+	.menu-overlay__glass {
+		opacity: 0;
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+		animation: none;
+	}
+	.menu-overlay__ink,
+	.menu-overlay__body,
+	.menu-overlay__footer {
+		opacity: 1;
+		animation: none;
+	}
+	.menu-flip__text,
+	.menu-flip::after {
+		transition: none;
 	}
 	*,
 	*::before,
