@@ -78,6 +78,18 @@ img {
 	overflow: clip;
 	background: var(--ink);
 }
+.site-content {
+	opacity: 0;
+}
+.site-content.is-visible {
+	animation: homepage-fade-in 1.45s 0.48s var(--ease-out) both;
+}
+.site-content:not(.is-visible) .hero-section {
+	transform: scale(1.05);
+}
+.site-content.is-visible .hero-section {
+	animation: homepage-scale-in 1.9s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
 .section-shell {
 	padding-inline: var(--page-gutter);
 }
@@ -131,9 +143,18 @@ img {
 	align-content: center;
 	padding-inline: 17.5vw;
 	font-family: 'Playfair Display', serif;
+	will-change: opacity;
+}
+.page-intro__title-wrap {
+	display: block;
+	overflow: hidden;
+	width: max-content;
 }
 .page-intro__title {
+	display: block;
 	font-size: clamp(1rem, 1.25vw, 1.4rem);
+	white-space: nowrap;
+	animation: intro-title-reveal 1.25s 0.28s var(--ease-out) both;
 }
 .page-intro__number {
 	position: absolute;
@@ -142,6 +163,35 @@ img {
 	font:
 		clamp(0.68rem, 0.875vw, 0.9rem)/1 'Cinzel',
 		serif;
+}
+
+@keyframes intro-title-reveal {
+	from {
+		opacity: 0.08;
+		clip-path: inset(0 100% 0 0);
+	}
+	to {
+		opacity: 1;
+		clip-path: inset(0 0 0 0);
+	}
+}
+
+@keyframes homepage-fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes homepage-scale-in {
+	from {
+		transform: scale(1.2);
+	}
+	to {
+		transform: scale(1);
+	}
 }
 
 .site-header {
@@ -1166,6 +1216,15 @@ img {
 @media (prefers-reduced-motion: reduce) {
 	html {
 		scroll-behavior: auto;
+	}
+	.site-content.is-visible {
+		opacity: 1;
+		animation: none;
+	}
+	.site-content:not(.is-visible) .hero-section,
+	.site-content.is-visible .hero-section {
+		transform: none;
+		animation: none;
 	}
 	*,
 	*::before,
