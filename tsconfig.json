@@ -1,7 +1,12 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+	"files": [],
+	"compilerOptions": {
+		"baseUrl": ".",
+		"ignoreDeprecations": "6.0",
+		"paths": {
+			"src/*": ["src/*"]
+		},
+		"types": ["clsx"]
+	},
+	"references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }
