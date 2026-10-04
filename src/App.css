@@ -84,10 +84,10 @@ img {
 .site-content.is-visible {
 	animation: homepage-fade-in 1.45s 0.48s var(--ease-out) both;
 }
-.site-content:not(.is-visible) .hero-section {
+.site-content:not(.is-visible) .hero-section__sticky {
 	transform: scale(1.05);
 }
-.site-content.is-visible .hero-section {
+.site-content.is-visible .hero-section__sticky {
 	animation: homepage-scale-in 1.9s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .page-content.is-menu-opening {
@@ -535,36 +535,44 @@ img {
 }
 
 .hero-section {
-	position: sticky;
+	position: relative;
+	height: calc(max(100svh, 100vw) + 100svh);
+	background: var(--ink);
+}
+.hero-section__sticky {
+	position: fixed;
 	top: 0;
-	z-index: 0;
+	left: 0;
+	z-index: 3;
+	width: 100%;
 	display: grid;
 	place-items: center;
 	height: 100svh;
 	overflow: hidden;
-	background: #6c777a;
+	transform-origin: center;
 }
 .hero-section__image {
 	position: absolute;
-	inset: -6%;
+	inset: 0;
+	z-index: 0;
+	will-change: transform;
 }
 .hero-section__image img {
-	width: 112%;
-	height: 112%;
+	width: 100%;
+	height: 100%;
 	object-fit: cover;
 }
-.hero-section::after {
+.hero-section__sticky::after {
 	content: '';
 	position: absolute;
 	inset: 0;
-	background: var(--color-overlay);
-}
-.hero-section__image img {
-	filter: saturate(0.74) contrast(0.84) brightness(1.18);
+	z-index: 2;
+	background: rgba(5, 9, 7, 0.015);
+	pointer-events: none;
 }
 .hero-section__title {
 	position: relative;
-	z-index: 3;
+	z-index: 4;
 	justify-self: start;
 	width: 65vw;
 	margin: 0;
@@ -579,31 +587,69 @@ img {
 }
 .cloud-layer {
 	position: absolute;
-	inset: 0;
-	z-index: 2;
+	top: 14.6875vw;
+	left: 0;
+	z-index: 3;
+	width: 100vw;
+	height: 100%;
 	pointer-events: none;
-	opacity: 0.86;
+	will-change: transform;
 }
 .cloud {
+	display: flex;
 	position: absolute;
+	left: 0;
+	width: 100vw;
 	max-width: none;
-	filter: brightness(1.2);
+	pointer-events: none;
 }
-.cloud img {
+.cloud__item {
+	display: flex;
+	flex-shrink: 0;
+	white-space: nowrap;
+	will-change: transform;
+}
+.cloud__item--1 {
+	animation: cloud-move-one 100s -50s linear infinite;
+}
+.cloud__item--2 {
+	animation: cloud-move-two 100s linear infinite;
+}
+.cloud__item img {
 	width: 100%;
 	height: 100%;
 }
 .cloud--one {
-	top: -18%;
-	left: -72%;
-	width: 235vw;
-	opacity: 0.65;
+	top: -33.0625vw;
+}
+.cloud--one .cloud__item {
+	width: 233.75vw;
+	height: 112.5vw;
 }
 .cloud--two {
-	top: 10%;
-	left: -35%;
-	width: 170vw;
-	opacity: 0.42;
+	top: -14.6875vw;
+}
+.cloud--two .cloud__item {
+	width: 168.75vw;
+	height: 81.25vw;
+}
+
+@keyframes cloud-move-one {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(-100%);
+	}
+}
+
+@keyframes cloud-move-two {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-200%);
+	}
 }
 
 .arrow-link {
@@ -644,56 +690,66 @@ img {
 	object-fit: cover;
 }
 
-.philosophy-section {
+.water-reveal {
+	display: grid;
+	position: relative;
+	width: fit-content;
+	overflow: visible;
+}
+.water-reveal__filter,
+.scene-filter {
+	position: absolute;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+	pointer-events: none;
+}
+.water-reveal__text {
+	display: block;
+	will-change: transform, filter, clip-path, opacity;
+}
+
+.home-journey {
 	position: relative;
 	z-index: 1;
-	min-height: 137.5vw;
 	margin-top: -100svh;
-	padding-top: max(68.75vw, 240svh);
-	background: transparent;
 }
-.philosophy-transition {
+.journey-backdrop {
 	position: absolute;
 	inset: 0;
 	z-index: 0;
 	pointer-events: none;
 }
-.philosophy-transition__sticky {
-	position: sticky;
-	top: 0;
+.journey-backdrop__fixed {
+	position: fixed;
+	inset: 0;
 	height: 100svh;
 	overflow: hidden;
-	background: transparent;
+	will-change: opacity;
 }
-.philosophy-transition__courtyard-stage,
-.philosophy-transition__courtyard,
-.philosophy-transition__shade,
-.philosophy-transition__veil {
+.journey-backdrop__room {
 	position: absolute;
-	inset: 0;
+	inset: -14%;
+	transform-origin: center;
+	will-change: transform;
 }
-.philosophy-transition__courtyard-stage {
-	will-change: transform, opacity;
-}
-.philosophy-transition__courtyard img {
+.journey-backdrop__room img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 }
-.philosophy-transition__courtyard img {
-	filter: saturate(0.82) contrast(0.94) brightness(0.94);
+.journey-backdrop__shade {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	background: #050500;
 }
-.philosophy-transition__shade {
-	background: linear-gradient(
-		to bottom,
-		rgba(7, 8, 5, 0.18),
-		rgba(7, 8, 5, 0.06) 60%,
-		rgba(7, 8, 5, 0.2)
-	);
-}
-.philosophy-transition__veil {
-	background: rgba(5, 6, 4, 0.55);
-	pointer-events: none;
+.philosophy-section {
+	position: relative;
+	z-index: 1;
+	padding-top: 68.75vw;
+	padding-bottom: 21.25vw;
+	background: transparent;
 }
 .philosophy-section > .section-label {
 	position: sticky;
@@ -710,8 +766,7 @@ img {
 .philosophy-section__copy {
 	padding-left: 12.5vw;
 }
-.philosophy-section__copy .display-heading span {
-	display: block;
+.philosophy-section__copy .display-heading > .water-reveal.is-end {
 	padding-left: 15.5vw;
 }
 .philosophy-section__description {
@@ -738,7 +793,7 @@ img {
 }
 .philosophy-section__single {
 	position: absolute;
-	top: 185svh;
+	top: 34.1875vw;
 	left: var(--page-gutter);
 	width: 20vw;
 	height: 20vw;
@@ -747,12 +802,13 @@ img {
 
 .projects-section {
 	position: relative;
+	z-index: 2;
 }
 .projects-intro {
 	position: relative;
 	width: 100%;
 	aspect-ratio: 1;
-	padding: 11.875vw var(--page-gutter) 0;
+	padding: 31.25vw var(--page-gutter) 0;
 	overflow: hidden;
 }
 .projects-intro__image,
@@ -765,8 +821,12 @@ img {
 	height: 100%;
 	object-fit: cover;
 }
+.projects-intro__image {
+	transform-origin: center;
+	will-change: opacity, transform, filter;
+}
 .projects-intro__veil {
-	background: linear-gradient(90deg, rgba(10, 8, 1, 0.08), rgba(10, 8, 1, 0.28));
+	background: transparent;
 }
 .projects-intro > .section-label {
 	position: absolute;
@@ -795,6 +855,9 @@ img {
 	background: var(--ink);
 	border-top: 0;
 }
+.project-story:first-child {
+	background: linear-gradient(to bottom, rgba(5, 5, 0, 0.12), rgba(5, 5, 0, 0.8) 72%, #050500 100%);
+}
 .project-story::before {
 	content: '';
 	position: absolute;
@@ -813,6 +876,7 @@ img {
 	left: var(--page-gutter);
 }
 .project-story__body {
+	position: relative;
 	display: grid;
 	grid-template-columns: 22.75vw minmax(270px, 22.5vw) 1fr 22.5vw;
 	min-height: 34.375vw;
@@ -824,7 +888,7 @@ img {
 	min-width: 0;
 }
 .project-story__title {
-	position: relative;
+	position: static;
 	margin: 0;
 	font:
 		400 clamp(2.35rem, 3.125vw, 3.55rem)/1 'Playfair Display',
@@ -833,8 +897,7 @@ img {
 .project-story__title span {
 	position: absolute;
 	left: 0;
-	top: calc(34.375vw - 1.2em);
-	bottom: auto;
+	bottom: 0;
 	transform: translateX(-22.75vw);
 	font:
 		clamp(0.72rem, 1.125vw, 1.15rem)/1 'Cinzel',
@@ -1152,8 +1215,7 @@ img {
 		--menu-reveal-offset: 5.224vw;
 	}
 	.hero-section {
-		height: 100svh;
-		min-height: 175vw;
+		height: calc(296.2686567164vw + 100svh);
 	}
 	.page-intro {
 		padding-inline: 20.15vw;
@@ -1166,13 +1228,6 @@ img {
 		left: 20.15vw;
 		font-size: 2.74vw;
 	}
-	.hero-section__image {
-		inset: -3%;
-	}
-	.hero-section__image img {
-		width: 106%;
-		height: 106%;
-	}
 	.hero-section__title {
 		width: 60vw;
 		margin-left: 20.15vw;
@@ -1181,15 +1236,22 @@ img {
 		right: 7.5vw;
 		bottom: 8vw;
 	}
+	.cloud-layer {
+		top: 58.4577114428vw;
+	}
 	.cloud--one {
-		top: 15%;
-		left: -20%;
-		width: 140vw;
+		top: -23.631840796vw;
+	}
+	.cloud--one .cloud__item {
+		width: 139.8009950249vw;
+		height: 67.4129353234vw;
 	}
 	.cloud--two {
-		top: 35%;
-		left: -55%;
-		width: 194vw;
+		top: -3.7313432836vw;
+	}
+	.cloud--two .cloud__item {
+		width: 193.7810945274vw;
+		height: 93.2835820896vw;
 	}
 	.arrow-link {
 		grid-template-columns: 19.9vw auto;
@@ -1200,20 +1262,20 @@ img {
 	}
 
 	.philosophy-section {
-		min-height: 285vw;
-		padding-top: 240svh;
+		padding-top: 24.8756218905vw;
+		padding-bottom: 42.2885572139vw;
 	}
 	.philosophy-section > .section-label {
 		top: 33.3vw;
 	}
 	.philosophy-section__content {
 		display: block;
-		margin-top: 65vw;
+		margin-top: 68.407960199vw;
 	}
 	.philosophy-section__copy {
 		padding-left: 14.93vw;
 	}
-	.philosophy-section__copy .display-heading span {
+	.philosophy-section__copy .display-heading > .water-reveal.is-end {
 		padding-left: 0;
 	}
 	.philosophy-section__description {
@@ -1238,7 +1300,7 @@ img {
 		height: 49.25vw;
 	}
 	.philosophy-section__single {
-		top: 185svh;
+		top: 24.8756218905vw;
 		right: var(--page-gutter);
 		left: auto;
 		width: 44.78vw;
@@ -1416,10 +1478,17 @@ img {
 		opacity: 1;
 		animation: none;
 	}
-	.site-content:not(.is-visible) .hero-section,
-	.site-content.is-visible .hero-section {
+	.site-content:not(.is-visible) .hero-section__sticky,
+	.site-content.is-visible .hero-section__sticky {
 		transform: none;
 		animation: none;
+	}
+	.cloud__item {
+		animation: none;
+	}
+	.water-reveal__text,
+	.projects-intro__image {
+		filter: none !important;
 	}
 	.page-content.is-menu-opening {
 		opacity: 0;

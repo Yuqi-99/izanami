@@ -8,6 +8,7 @@ import { Hero } from './sections/Hero/Hero';
 import { Philosophy } from './sections/Philosophy/Philosophy';
 import { Projects } from './sections/Projects/Projects';
 import { Company } from './sections/Company/Company';
+import { HomeJourney } from './sections/HomeJourney/HomeJourney';
 import './App.css';
 
 function App() {
@@ -36,8 +37,10 @@ function App() {
 				<div className={`page-content${menuOpen ? ' is-menu-opening' : ''}`}>
 					<main id='main'>
 						<Hero />
-						<Philosophy />
-						<Projects />
+						<HomeJourney>
+							<Philosophy />
+							<Projects />
+						</HomeJourney>
 						<Company />
 					</main>
 					<Footer />

@@ -1,4 +1,5 @@
 import { Reveal } from '../../components/animation/Reveal';
+import { WaterReveal } from '../../components/animation/WaterReveal';
 import { ArrowLink } from '../../components/common/ArrowLink';
 import { Logo } from '../../components/common/Logo';
 
@@ -13,7 +14,7 @@ export function Company() {
 			<h2 className='section-label'>company</h2>
 			<Reveal className='company-section__content'>
 				<Logo className='company-section__logo' />
-				<p className='display-heading'>Who we are</p>
+				<p className='display-heading'><WaterReveal>Who we are</WaterReveal></p>
 				<div className='body-copy company-section__descriptions'>
 					<p>
 						No matter how the world changes, what truly enriches human life remains the same. Across

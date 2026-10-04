@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef } from 'react';
 import { Reveal } from '../../components/animation/Reveal';
+import { WaterReveal } from '../../components/animation/WaterReveal';
 import { ArrowLink } from '../../components/common/ArrowLink';
 
 interface Project {
@@ -83,7 +84,7 @@ function ProjectStory({ project }: { project: Project }) {
 				<Reveal className='project-story__copy'>
 					<h3 className='project-story__title'>
 						<span>{project.number}</span>
-						{project.title}
+						<WaterReveal>{project.title}</WaterReveal>
 					</h3>
 					<p className='project-story__lead'>{project.lead}</p>
 					<p className='project-story__description body-copy'>{project.description}</p>
@@ -99,19 +100,13 @@ export function Projects() {
 	return (
 		<section id='projects' className='projects-section'>
 			<div className='projects-intro'>
-				<picture className='projects-intro__image'>
-					<source media='(max-width: 767px)' srcSet='/images/sp_home_projects_img.webp' />
-					<img src='/images/home_projects_img.webp' alt='' loading='lazy' />
-				</picture>
 				<div className='projects-intro__veil' />
 				<h2 className='section-label'>projects</h2>
 				<Reveal className='projects-intro__copy'>
 					<p className='display-heading'>
-						Designing
-						<br />
-						the Dimensions
-						<br />
-						of Life
+						<WaterReveal>Designing</WaterReveal>
+						<WaterReveal delay={0.08}>the Dimensions</WaterReveal>
+						<WaterReveal delay={0.16}>of Life</WaterReveal>
 					</p>
 					<p className='body-copy'>
 						Through three practices,
