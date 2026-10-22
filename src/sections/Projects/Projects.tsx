@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform } from 'motion/react';
-import { useRef } from 'react';
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { Reveal } from '../../components/animation/Reveal';
 import { WaterReveal } from '../../components/animation/WaterReveal';
 import { ArrowLink } from '../../components/common/ArrowLink';
@@ -97,33 +97,97 @@ function ProjectStory({ project }: { project: Project }) {
 }
 
 export function Projects() {
+	const viewportRef = useRef<HTMLDivElement>(null);
+	const trackRef = useRef<HTMLDivElement>(null);
+	const reduceMotion = useReducedMotion();
+	const [trackShift, setTrackShift] = useState(0);
+	const { scrollYProgress } = useScroll({
+		target: viewportRef,
+		offset: ['start start', 'end end'],
+	});
+	const trackY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -trackShift]);
+
+	useLayoutEffect(() => {
+		const viewport = viewportRef.current;
+		const track = trackRef.current;
+		if (!viewport || !track) return;
+
+		const sections = Array.from(track.querySelectorAll<HTMLElement>('.project-story'));
+		const desktopTimeline = window.matchMedia(
+			'(min-width: 768px) and (hover: hover) and (pointer: fine)'
+		);
+
+		const resetTimeline = () => {
+			viewport.style.removeProperty('height');
+			sections.forEach((section) => section.style.removeProperty('top'));
+			setTrackShift(0);
+		};
+
+		const updateTimeline = () => {
+			resetTimeline();
+			if (!desktopTimeline.matches || reduceMotion || sections.length < 2) return;
+
+			const firstHeight = sections[0].getBoundingClientRect().height;
+			const shift = firstHeight * 0.5;
+			const targetHeight = Math.max(track.scrollHeight - shift, window.innerHeight);
+			const range = Math.max(targetHeight - window.innerHeight, 1);
+
+			viewport.style.height = `${targetHeight}px`;
+			sections.forEach((section, index) => {
+				if (index === 0) section.style.top = '0px';
+				else if (index === sections.length - 1) section.style.removeProperty('top');
+				else section.style.top = `${(shift * firstHeight * index) / (range + shift)}px`;
+			});
+			setTrackShift(shift);
+		};
+
+		const resizeObserver = new ResizeObserver(updateTimeline);
+		resizeObserver.observe(track);
+		desktopTimeline.addEventListener('change', updateTimeline);
+		window.addEventListener('resize', updateTimeline);
+		updateTimeline();
+
+		return () => {
+			resizeObserver.disconnect();
+			desktopTimeline.removeEventListener('change', updateTimeline);
+			window.removeEventListener('resize', updateTimeline);
+			resetTimeline();
+		};
+	}, [reduceMotion]);
+
 	return (
 		<section id='projects' className='projects-section'>
 			<div className='projects-intro'>
 				<div className='projects-intro__veil' />
 				<h2 className='section-label'>projects</h2>
-				<Reveal className='projects-intro__copy'>
+				<div className='projects-intro__copy'>
 					<p className='display-heading'>
 						<WaterReveal>Designing</WaterReveal>
 						<WaterReveal delay={0.08}>the Dimensions</WaterReveal>
 						<WaterReveal delay={0.16}>of Life</WaterReveal>
 					</p>
-					<p className='body-copy'>
-						Through three practices,
-						<br />
-						Izanami designs harmony across life.
-						<br />
-						How life is nurtured, how living is enriched,
-						<br />
-						and how one returns to oneself.
-					</p>
-					<ArrowLink href='#school'>View Projects</ArrowLink>
-				</Reveal>
+					<Reveal delay={0.48}>
+						<p className='body-copy'>
+							Through three practices,
+							<br />
+							Izanami designs harmony across life.
+							<br />
+							How life is nurtured, how living is enriched,
+							<br />
+							and how one returns to oneself.
+						</p>
+					</Reveal>
+					<ArrowLink href='#school' delay={0.78}>
+						View Projects
+					</ArrowLink>
+				</div>
 			</div>
-			<div className='project-stories'>
-				{projects.map((project) => (
-					<ProjectStory key={project.slug} project={project} />
-				))}
+			<div ref={viewportRef} className='project-stories'>
+				<motion.div ref={trackRef} className='project-stories__track' style={{ y: trackY }}>
+					{projects.map((project) => (
+						<ProjectStory key={project.slug} project={project} />
+					))}
+				</motion.div>
 			</div>
 		</section>
 	);

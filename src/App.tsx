@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
+import clsx from 'clsx';
 import { AnimatePresence } from 'motion/react';
+import { useLenis } from 'lenis/react';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { Aside } from './components/layout/Aside';
@@ -14,27 +16,33 @@ import './App.css';
 function App() {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [loading, setLoading] = useState(true);
+	const lenis = useLenis();
 	const finishLoading = useCallback(() => setLoading(false), []);
 
 	useEffect(() => {
-		document.body.style.overflow = menuOpen || loading ? 'hidden' : '';
+		const locked = menuOpen || loading;
+		document.body.style.overflow = locked ? 'hidden' : '';
+		if (locked) lenis?.stop();
+		else lenis?.start();
+
 		return () => {
 			document.body.style.overflow = '';
+			lenis?.start();
 		};
-	}, [loading, menuOpen]);
+	}, [lenis, loading, menuOpen]);
 
 	return (
 		<div className='site-shell'>
 			<a className='skip-link' href='#main'>
 				Skip to content
 			</a>
-			<div className={`site-content${loading ? '' : ' is-visible'}`}>
+			<div className={clsx('site-content', !loading && 'is-visible')}>
 				<Header open={menuOpen} onToggle={() => setMenuOpen((value) => !value)} />
 				<Aside />
 				<AnimatePresence>
 					{menuOpen && <Header.Menu onClose={() => setMenuOpen(false)} />}
 				</AnimatePresence>
-				<div className={`page-content${menuOpen ? ' is-menu-opening' : ''}`}>
+				<div className={clsx('page-content', menuOpen && 'is-menu-opening')}>
 					<main id='main'>
 						<Hero />
 						<HomeJourney>

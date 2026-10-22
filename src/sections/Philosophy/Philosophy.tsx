@@ -35,19 +35,25 @@ export function Philosophy() {
 		<section ref={sectionRef} id='philosophy' className='philosophy-section section-shell'>
 			<h2 className='section-label'>philosophy</h2>
 			<div className='philosophy-section__content'>
-				<Reveal className='philosophy-section__copy'>
+				<div className='philosophy-section__copy'>
 					<p className='display-heading'>
 						<WaterReveal>Sharing</WaterReveal>
 						<WaterReveal delay={0.08}>the Japanese Spirit</WaterReveal>
-						<WaterReveal className='is-end' delay={0.16}>of Harmony</WaterReveal>
+						<WaterReveal className='is-end' delay={0.16}>
+							of Harmony
+						</WaterReveal>
 					</p>
-					<p className='body-copy philosophy-section__description'>
-						Harmony is not something to be created. It is something to be remembered. Guided by the
-						ancient spirit of “和” Wa, Izanami opens a quiet path back to oneself into harmony with
-						who you are, and harmony with the world around you.
-					</p>
-					<ArrowLink href='#projects'>View Philosophy</ArrowLink>
-				</Reveal>
+					<Reveal delay={0.48}>
+						<p className='body-copy philosophy-section__description'>
+							Harmony is not something to be created. It is something to be remembered. Guided by
+							the ancient spirit of “和” Wa, Izanami opens a quiet path back to oneself into harmony
+							with who you are, and harmony with the world around you.
+						</p>
+					</Reveal>
+					<ArrowLink href='#projects' delay={0.78}>
+						View Philosophy
+					</ArrowLink>
+				</div>
 				<motion.div className='philosophy-collage'>
 					<motion.div
 						className='philosophy-collage__large'

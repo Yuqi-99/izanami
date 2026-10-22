@@ -1,4 +1,5 @@
 import { useClocks } from '../../hooks/useClocks';
+import { ArrowLink } from '../common/ArrowLink';
 
 export function Footer() {
 	const times = useClocks();
@@ -6,7 +7,9 @@ export function Footer() {
 		<footer id='contact' className='site-footer section-shell'>
 			<div className='site-footer__head'>
 				<span className='section-label'>izanami</span>
-				<a href='#philosophy'>Philosophy</a>
+				<ArrowLink href='#philosophy' revealOnScroll={false}>
+					Philosophy
+				</ArrowLink>
 			</div>
 			<div className='site-footer__body'>
 				<nav aria-label='Footer navigation'>
@@ -18,10 +21,16 @@ export function Footer() {
 				</nav>
 				<div className='site-footer__links'>
 					<a href='https://wa.me/817043537325' target='_blank' rel='noreferrer'>
-						whatsapp ↗
+						<span className='site-footer__social-mark' aria-hidden='true'>
+							◉
+						</span>
+						whatsapp
 					</a>
 					<a href='https://www.instagram.com/moca.o64/' target='_blank' rel='noreferrer'>
-						instagram ↗
+						<span className='site-footer__social-mark' aria-hidden='true'>
+							◎
+						</span>
+						instagram
 					</a>
 					<a href='#contact'>privacy policy</a>
 				</div>
@@ -49,9 +58,17 @@ export function Footer() {
 			<div className='site-footer__foot'>
 				<small>©2026</small>
 				<div>
-					<time>{times.dubai}</time> gst, dubai uae <time>{times.tokyo}</time> jst, tokyo jpn
+					<span>
+						<time>{times.dubai}</time> gst, dubai uae
+					</span>
+					<span>
+						<time>{times.tokyo}</time> jst, tokyo jpn
+					</span>
 				</div>
 				<a href='#top'>top</a>
+			</div>
+			<div className='site-footer__foot'>
+				<p>Clone by yuqi</p>
 			</div>
 		</footer>
 	);

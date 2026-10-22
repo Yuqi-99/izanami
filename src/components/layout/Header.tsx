@@ -1,4 +1,5 @@
 import { type CSSProperties, useEffect } from 'react';
+import clsx from 'clsx';
 import { motion, useReducedMotion } from 'motion/react';
 import { Logo } from '../common/Logo';
 
@@ -67,6 +68,7 @@ function Menu({ onClose }: MenuProps) {
 		<motion.nav
 			id='navigation'
 			className='menu-overlay'
+			data-lenis-prevent
 			aria-label='Primary navigation'
 			initial='hidden'
 			animate='visible'
@@ -92,7 +94,7 @@ function Menu({ onClose }: MenuProps) {
 				<ul className='menu-overlay__list'>
 					{navItems.map((item) => (
 						<li
-							className={`menu-overlay__item${item.label === 'projects' ? ' has-projects' : ''}`}
+							className={clsx('menu-overlay__item', item.label === 'projects' && 'has-projects')}
 							key={item.label}
 						>
 							<a
