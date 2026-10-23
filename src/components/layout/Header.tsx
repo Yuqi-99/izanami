@@ -115,7 +115,11 @@ function Menu({ onClose }: MenuProps) {
 											key={project.label}
 											style={revealStyle(project.delay)}
 										>
-											<a className={project.connected ? 'is-connected' : ''} href={project.href} onClick={onClose}>
+											<a
+												className={project.connected ? 'is-connected' : ''}
+												href={project.href}
+												onClick={onClose}
+											>
 												<FlipLabel>{project.label}</FlipLabel>
 											</a>
 										</li>
@@ -158,7 +162,7 @@ export function Header({ open, onToggle }: HeaderProps) {
 			<a className='site-header__logo' href='#top' aria-label='Izanami home'>
 				<Logo />
 			</a>
-			<div className='site-header__controls'>
+			<div className='site-header__controls mt-4 sm:mt-0'>
 				<div className='language-switcher' aria-label='Language selector'>
 					<a className='is-active' href='#top'>
 						en
@@ -177,7 +181,11 @@ export function Header({ open, onToggle }: HeaderProps) {
 						<motion.span animate={{ opacity: open ? 0 : 1 }} transition={{ duration: 0.4 }}>
 							menu
 						</motion.span>
-						<motion.span aria-hidden={!open} animate={{ opacity: open ? 1 : 0 }} transition={{ duration: 0.4 }}>
+						<motion.span
+							aria-hidden={!open}
+							animate={{ opacity: open ? 1 : 0 }}
+							transition={{ duration: 0.4 }}
+						>
 							close
 						</motion.span>
 					</span>

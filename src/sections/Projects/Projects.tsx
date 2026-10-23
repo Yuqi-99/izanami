@@ -182,7 +182,7 @@ export function Projects() {
 					</ArrowLink>
 				</div>
 			</div>
-			<div ref={viewportRef} className='project-stories'>
+			<div ref={viewportRef} className='project-stories' data-fluid-disabled>
 				<motion.div ref={trackRef} className='project-stories__track' style={{ y: trackY }}>
 					{projects.map((project) => (
 						<ProjectStory key={project.slug} project={project} />

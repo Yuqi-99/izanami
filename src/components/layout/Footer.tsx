@@ -4,7 +4,7 @@ import { ArrowLink } from '../common/ArrowLink';
 export function Footer() {
 	const times = useClocks();
 	return (
-		<footer id='contact' className='site-footer section-shell'>
+		<footer id='contact' className='site-footer section-shell' data-fluid-disabled>
 			<div className='site-footer__head'>
 				<span className='section-label'>izanami</span>
 				<ArrowLink href='#philosophy' revealOnScroll={false}>

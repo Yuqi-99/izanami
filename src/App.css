@@ -78,6 +78,17 @@ img {
 	overflow: clip;
 	background: var(--ink);
 }
+.global-fluid-text {
+	position: fixed;
+	inset: 0;
+	z-index: 105;
+	display: block;
+	width: 100vw;
+	height: 100vh;
+	pointer-events: none;
+	contain: strict;
+	will-change: contents;
+}
 .site-content {
 	opacity: 0;
 }
@@ -557,6 +568,34 @@ img {
 	inset: 0;
 	z-index: 0;
 	will-change: transform;
+}
+.hero-fluid-image,
+.hero-fluid-image__fallback,
+.hero-fluid-image__canvas {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+.hero-fluid-image {
+	overflow: hidden;
+}
+.hero-fluid-image__fallback {
+	display: block;
+	opacity: 1;
+	transition: opacity 0.25s ease;
+}
+.hero-fluid-image__canvas {
+	display: block;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.25s ease;
+}
+.hero-fluid-image.is-ready .hero-fluid-image__fallback {
+	opacity: 0;
+}
+.hero-fluid-image.is-ready .hero-fluid-image__canvas {
+	opacity: 1;
 }
 .hero-section__image img {
 	width: 100%;

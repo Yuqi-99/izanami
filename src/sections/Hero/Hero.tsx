@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef } from 'react';
+import { HeroFluidImage } from '../../components/animation/HeroFluidImage';
 
 export function Hero() {
 	const sectionRef = useRef<HTMLElement>(null);
@@ -23,13 +24,15 @@ export function Hero() {
 	return (
 		<section ref={sectionRef} id='top' className='hero-section'>
 			<motion.div className='hero-section__sticky' style={{ opacity: heroOpacity }}>
-				<motion.picture
+				<motion.div
 					className='hero-section__image'
 					style={{ y: imageY, scale: imageScale, opacity: forestOpacity }}
 				>
-					<source media='(max-width: 767px)' srcSet='/images/sp_home_fv_img.webp' />
-					<img src='/images/home_fv_img.webp' alt='' fetchPriority='high' />
-				</motion.picture>
+					<HeroFluidImage
+						desktopSrc='/images/home_fv_img.webp'
+						mobileSrc='/images/sp_home_fv_img.webp'
+					/>
+				</motion.div>
 				<motion.div
 					className='cloud-layer'
 					style={{ y: cloudY, opacity: cloudOpacity }}
