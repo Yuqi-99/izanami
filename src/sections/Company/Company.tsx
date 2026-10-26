@@ -11,10 +11,14 @@ export function Company() {
 				<img src='/images/home_company_img.webp' alt='' loading='lazy' />
 			</picture>
 			<div className='company-section__veil' />
-			<h2 className='section-label'>company</h2>
+			<div className='section-marker'>
+				<h2 className='section-label'>company</h2>
+			</div>
 			<Reveal className='company-section__content'>
 				<Logo className='company-section__logo' />
-				<p className='display-heading'><WaterReveal>Who we are</WaterReveal></p>
+				<p className='display-heading'>
+					<WaterReveal>Who we are</WaterReveal>
+				</p>
 				<div className='body-copy company-section__descriptions'>
 					<p>
 						No matter how the world changes, what truly enriches human life remains the same. Across

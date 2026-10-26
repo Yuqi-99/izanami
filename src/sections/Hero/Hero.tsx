@@ -1,6 +1,5 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef } from 'react';
-import { HeroFluidImage } from '../../components/animation/HeroFluidImage';
 
 export function Hero() {
 	const sectionRef = useRef<HTMLElement>(null);
@@ -8,8 +7,8 @@ export function Hero() {
 		target: sectionRef,
 		offset: ['start start', 'end end'],
 	});
-	const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '5%']);
-	const imageScale = useTransform(scrollYProgress, [0, 1], [1.01, 1.075]);
+	const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '-35%']);
+	const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.075]);
 	const forestOpacity = useTransform(scrollYProgress, [0, 0.44, 0.89, 1], [1, 1, 0, 0]);
 	const cloudOpacity = useTransform(scrollYProgress, [0, 0.74, 0.9, 1], [1, 1, 0, 0]);
 	const cloudY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
@@ -28,10 +27,10 @@ export function Hero() {
 					className='hero-section__image'
 					style={{ y: imageY, scale: imageScale, opacity: forestOpacity }}
 				>
-					<HeroFluidImage
-						desktopSrc='/images/home_fv_img.webp'
-						mobileSrc='/images/sp_home_fv_img.webp'
-					/>
+					<picture>
+						<source media='(max-width: 767px)' srcSet='/images/sp_home_fv_img.webp' />
+						<img src='/images/home_fv_img.webp' alt='' fetchPriority='high' />
+					</picture>
 				</motion.div>
 				<motion.div
 					className='cloud-layer'

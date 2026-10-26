@@ -164,14 +164,10 @@ void main() {
 	vec2 direction = normalize(velocity);
 	vec2 displacedFluidUv = vUv - uDisturbPower * direction * offset;
 	displacedFluidUv -= uDisturbPower * direction * offset;
-	vec2 sourceUv = vec2(vUv.x, 1.0 - vUv.y);
 	vec2 displacedSourceUv = vec2(displacedFluidUv.x, 1.0 - displacedFluidUv.y);
-	vec4 base = texture(uSource, sourceUv);
 	vec4 displaced = texture(uSource, displacedSourceUv);
 	float fieldMask = smoothstep(0.00025, 0.0075, abs(offset));
-	float reveal = max(displaced.a - base.a, 0.0);
-	float alpha = min(0.96, (reveal + displaced.a * 0.92) * fieldMask);
-	fragColor = vec4(displaced.rgb, alpha);
+	fragColor = vec4(displaced.rgb, fieldMask);
 }`;
 
 function compileShader(gl: WebGL2RenderingContext, type: number, source: string) {
@@ -306,7 +302,11 @@ function drawImages(
 	width: number,
 	height: number
 ) {
-	root.querySelectorAll<HTMLImageElement>('img').forEach((image) => {
+	// Fixed navigation sits above the scene, despite appearing first in DOM order.
+	const images = Array.from(root.querySelectorAll<HTMLImageElement>('img')).sort(
+		(a, b) => Number(Boolean(a.closest('.brand-mark'))) - Number(Boolean(b.closest('.brand-mark')))
+	);
+	images.forEach((image) => {
 		if (
 			!image.complete ||
 			image.naturalWidth === 0 ||
@@ -366,6 +366,23 @@ function drawImages(
 			rect.height
 		);
 		context.restore();
+		// Include the scene's darkening layer in the displaced texture.
+		const shade = image
+			.closest('.journey-backdrop__fixed, .company-section')
+			?.querySelector<HTMLElement>('.journey-backdrop__shade, .company-section__veil');
+		if (shade) {
+			const shadeStyle = window.getComputedStyle(shade);
+			context.save();
+			context.globalAlpha = effectiveOpacity(shade, root);
+			context.fillStyle = shadeStyle.backgroundColor;
+			context.fillRect(
+				clipped.left,
+				clipped.top,
+				clipped.right - clipped.left,
+				clipped.bottom - clipped.top
+			);
+			context.restore();
+		}
 	});
 }
 
@@ -379,6 +396,10 @@ function drawSnapshot(
 	context.setTransform(1, 0, 0, 1, 0, 0);
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 	context.setTransform(ratio, 0, 0, ratio, 0, 0);
+	// An opaque scene erases the original glyph underneath its displaced copy.
+	// A transparent snapshot only adds a second glyph and produces a ghost trail.
+	context.fillStyle = window.getComputedStyle(document.body).backgroundColor;
+	context.fillRect(0, 0, width, height);
 	drawImages(context, root, width, height);
 	const range = document.createRange();
 	const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -711,8 +732,8 @@ export function GlobalFluidText() {
 			gl.clearColor(0, 0, 0, 0);
 			gl.clear(gl.COLOR_BUFFER_BIT);
 			if (!velocity || !dye || energy <= 0.004) return;
-			gl.enable(gl.BLEND);
-			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+			// The browser composites this straight-alpha canvas with the DOM once.
+			gl.disable(gl.BLEND);
 			gl.useProgram(output.program);
 			bindTexture(output.uniforms.uSource, 0, sourceTexture);
 			bindTexture(output.uniforms.uVelocity, 1, velocity.read.texture);

@@ -158,6 +158,10 @@ export function Projects() {
 	return (
 		<section id='projects' className='projects-section'>
 			<div className='projects-intro'>
+				<picture className='projects-intro__image' aria-hidden='true'>
+					<source media='(max-width: 767px)' srcSet='/images/sp_home_projects_img.webp' />
+					<img src='/images/home_projects_img.webp' alt='' loading='lazy' />
+				</picture>
 				<div className='projects-intro__veil' />
 				<h2 className='section-label'>projects</h2>
 				<div className='projects-intro__copy'>

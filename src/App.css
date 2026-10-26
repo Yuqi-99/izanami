@@ -111,8 +111,8 @@ img {
 .display-heading {
 	font-family: 'Playfair Display', serif;
 	font-size: clamp(2.35rem, 3.125vw, 3.55rem);
-	line-height: 1.24;
-	letter-spacing: -0.035em;
+	line-height: 1.4;
+	letter-spacing: -0.015em;
 }
 .display-small {
 	font-family: 'Playfair Display', serif;
@@ -228,7 +228,7 @@ img {
 	justify-content: space-between;
 	align-items: flex-start;
 	height: 8.5rem;
-	padding: 1.75vw var(--page-gutter) 0;
+	padding: 0.75vw var(--page-gutter) 0;
 	pointer-events: none;
 	color: var(--color-text);
 }
@@ -237,9 +237,10 @@ img {
 	pointer-events: auto;
 }
 .site-header__logo {
-	width: clamp(3.15rem, 3.125vw, 4.2rem);
-	padding: 0.55rem;
-	margin-left: -0.55rem;
+	width: clamp(52.575px, 4.38125vw, 78.8625px);
+	padding: clamp(7.875px, 0.65625vw, 11.8125px);
+	margin-top: 1.78125vw;
+	margin-left: -0.65625vw;
 }
 .brand-mark {
 	display: flex;
@@ -261,24 +262,25 @@ img {
 .site-header__controls {
 	display: flex;
 	align-items: flex-start;
-	gap: clamp(2rem, 3.2vw, 4rem);
+	justify-content: space-between;
+	width: 22.5vw;
 	font-family: 'Cinzel', serif;
 	font-size: clamp(0.72rem, 0.875vw, 0.98rem);
 }
 .language-switcher {
 	display: flex;
-	gap: 1.5rem;
+	gap: 0;
 }
 .language-switcher a,
 .menu-trigger {
 	position: relative;
-	padding: 0.75rem 0.25rem;
+	padding: 2.2vw 0.65625vw 0.65625vw;
 }
 .language-switcher a::before,
 .menu-trigger__dot {
 	content: '';
 	position: absolute;
-	top: -0.25rem;
+	top: 0.65625vw;
 	left: 50%;
 	width: 0.25rem;
 	height: 0.25rem;
@@ -288,7 +290,7 @@ img {
 	transition: opacity 0.3s;
 }
 .language-switcher .is-active::before,
-.menu-trigger:hover .menu-trigger__dot {
+.menu-trigger .menu-trigger__dot {
 	opacity: 1;
 }
 .language-switcher a::after,
@@ -597,6 +599,10 @@ img {
 .hero-fluid-image.is-ready .hero-fluid-image__canvas {
 	opacity: 1;
 }
+.hero-section__image picture {
+	display: block;
+	height: 100%;
+}
 .hero-section__image img {
 	width: 100%;
 	height: 100%;
@@ -762,6 +768,7 @@ img {
 	transform-origin: bottom center;
 	will-change: transform;
 }
+.reveal-image__surface,
 .reveal-image picture {
 	display: block;
 	width: 100%;
@@ -811,7 +818,8 @@ img {
 }
 .journey-backdrop__room {
 	position: absolute;
-	inset: -14%;
+	inset: -5% auto;
+	height: max(100vw, 100svh);
 	transform-origin: center;
 	will-change: transform;
 }
@@ -833,10 +841,21 @@ img {
 	padding-bottom: 21.25vw;
 	background: transparent;
 }
-.philosophy-section > .section-label {
+.section-marker {
+	position: absolute;
+	left: var(--page-gutter);
+	bottom: 0;
+	width: 2em;
+	pointer-events: none;
+}
+.section-marker .section-label {
 	position: sticky;
 	top: 12.3vw;
-	align-self: start;
+	width: fit-content;
+	margin: 0;
+}
+.philosophy-section > .section-marker {
+	top: 68.75vw;
 }
 .philosophy-section__content {
 	position: relative;
@@ -897,7 +916,7 @@ img {
 	position: relative;
 	width: 100%;
 	aspect-ratio: 1;
-	padding: 31.25vw var(--page-gutter) 0;
+	padding: 13.75vw var(--page-gutter) 0;
 	overflow: hidden;
 }
 .projects-intro__image,
@@ -911,6 +930,7 @@ img {
 	object-fit: cover;
 }
 .projects-intro__image {
+	display: none;
 	transform-origin: center;
 	will-change: opacity, transform, filter;
 }
@@ -1026,6 +1046,8 @@ img {
 
 .company-section {
 	position: relative;
+	z-index: 2;
+	background: var(--ink);
 	display: grid;
 	place-items: center;
 	width: 100%;
@@ -1045,11 +1067,9 @@ img {
 .company-section__veil {
 	background: rgba(8, 7, 3, 0.18);
 }
-.company-section > .section-label {
-	position: sticky;
-	top: 12.3vw;
-	align-self: start;
-	justify-self: start;
+.company-section > .section-marker {
+	top: 6.25vw;
+	z-index: 3;
 }
 .company-section__content {
 	position: relative;
@@ -1079,6 +1099,9 @@ img {
 }
 
 .site-footer {
+	position: relative;
+	z-index: 2;
+	background: var(--ink);
 	min-height: 81svh;
 	padding-top: 3vw;
 	padding-bottom: 2.3vw;
@@ -1204,26 +1227,13 @@ img {
 	margin-left: 2rem;
 }
 
-@media (max-width: 1023px) and (min-width: 768px) {
-	.project-story__body {
-		grid-template-columns: 10vw minmax(250px, 30vw) 1fr 28vw;
-	}
-	.project-story__image-wrap {
-		width: 28vw;
-		height: 43vw;
-	}
-	.company-section__content {
-		width: 34vw;
-	}
-}
-
 @media (max-width: 767px) {
 	:root {
 		--page-gutter: 10.2vw;
 	}
 	.display-heading {
 		font-size: 7.46vw;
-		line-height: 1.24;
+		line-height: 1.4;
 	}
 	.display-small {
 		font-size: 3.48vw;
@@ -1244,21 +1254,22 @@ img {
 		width: 13.7vw;
 		padding: 3.1vw;
 		margin-left: 1.55vw;
+		margin-top: 0;
 	}
 	.brand-mark > span {
 		margin-top: 0.6vw;
 		font-size: 2.05vw;
 	}
 	.site-header__controls {
-		gap: 5.7vw;
+		width: 46.5vw;
 		font-size: 2.74vw;
 	}
 	.language-switcher {
-		gap: 4.5vw;
+		gap: 0;
 	}
 	.language-switcher a,
 	.menu-trigger {
-		padding: 3.1vw 0.5vw;
+		padding: 10.25vw 3.1vw 3.1vw;
 	}
 	.menu-overlay {
 		grid-template-rows: 18vw auto 1fr;
@@ -1319,6 +1330,18 @@ img {
 	.hero-section {
 		height: calc(296.2686567164vw + 100svh);
 	}
+	.hero-section__image {
+		height: 296.2686567164vw;
+	}
+	.language-switcher a::before,
+	.menu-trigger__dot {
+		top: 3.1vw;
+		width: 0.995vw;
+		height: 0.995vw;
+	}
+	.journey-backdrop {
+		display: none;
+	}
 	.page-intro {
 		padding-inline: 20.15vw;
 	}
@@ -1369,8 +1392,11 @@ img {
 		padding-bottom: 42.2885572139vw;
 		background: var(--ink);
 	}
-	.philosophy-section > .section-label {
+	.section-marker .section-label {
 		top: 33.3vw;
+	}
+	.philosophy-section > .section-marker {
+		top: 24.8756218905vw;
 	}
 	.philosophy-section__content {
 		display: block;
@@ -1387,7 +1413,7 @@ img {
 		margin-top: 6.22vw;
 	}
 	.philosophy-section__copy .arrow-link {
-		margin-top: 2.5vw;
+		margin-top: 7.46vw;
 	}
 	.philosophy-collage {
 		width: 52.24vw;
@@ -1415,17 +1441,16 @@ img {
 		height: 231vw;
 		aspect-ratio: auto;
 		padding-top: 7.46vw;
-		background: linear-gradient(
-			to bottom,
-			var(--ink) 0%,
-			var(--ink) 38%,
-			rgba(10, 8, 1, 0.92) 48%,
-			transparent 64%
-		);
+		background: var(--ink);
 	}
 	.projects-intro__image {
+		display: block;
 		top: 32.3vw;
 		height: 199vw;
+	}
+	.projects-intro__veil {
+		z-index: 1;
+		background: linear-gradient(to bottom, var(--ink) 12%, transparent 55%, var(--ink));
 	}
 	.projects-intro > .section-label {
 		top: 7.46vw;
@@ -1435,13 +1460,13 @@ img {
 	.projects-intro__copy {
 		width: auto;
 		margin: 0;
-		padding: 65vw 0 0 14.93vw;
+		padding: 0 0 0 14.93vw;
 	}
 	.projects-intro__copy .body-copy {
 		margin-top: 6.22vw;
 	}
 	.projects-intro__copy .arrow-link {
-		margin-top: 4.5vw;
+		margin-top: 9.45vw;
 	}
 
 	.project-story {
@@ -1487,7 +1512,7 @@ img {
 	}
 	.project-story__copy .arrow-link {
 		order: 4;
-		margin-top: 2.5vw;
+		margin-top: 7.46vw;
 	}
 	.project-story__image-wrap {
 		grid-column: 2;
@@ -1504,16 +1529,18 @@ img {
 	}
 
 	.company-section {
-		height: 175.12vw;
+		min-height: 175.12vw;
+		height: auto;
 		aspect-ratio: auto;
-		padding-top: 27.36vw;
+		padding-top: 49.25vw;
+		padding-bottom: 17.41vw;
 	}
-	.company-section > .section-label {
+	.company-section > .section-marker {
 		top: 27.36vw;
 	}
 	.company-section__content {
 		width: auto;
-		padding: 15vw 0 0;
+		padding: 0;
 	}
 	.company-section__logo {
 		width: 12.44vw;
@@ -1526,7 +1553,7 @@ img {
 		margin-top: 4.98vw;
 	}
 	.company-section__content .arrow-link {
-		margin-top: 2.5vw;
+		margin-top: 7.46vw;
 	}
 
 	.site-footer {

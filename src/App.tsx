@@ -53,9 +53,10 @@ function App() {
 						<Company />
 					</main>
 					<Footer />
+					<GlobalFluidText />
 				</div>
 			</div>
-			<GlobalFluidText />
+
 			<AnimatePresence>{loading && <PageIntro onComplete={finishLoading} />}</AnimatePresence>
 		</div>
 	);

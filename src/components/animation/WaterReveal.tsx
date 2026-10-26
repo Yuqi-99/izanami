@@ -1,4 +1,4 @@
-import { useId, useRef } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'motion/react';
 
 interface WaterRevealProps {
@@ -13,11 +13,25 @@ export function WaterReveal({ children, className = '', delay = 0 }: WaterReveal
 	const reduceMotion = useReducedMotion();
 	const filterId = `water-reveal-${useId().replace(/:/g, '')}`;
 	const animate = reduceMotion || inView;
+	const distortionRef = useRef<SVGAnimateElement>(null);
+
+	useEffect(() => {
+		if (!inView || reduceMotion) return;
+		const timer = window.setTimeout(() => distortionRef.current?.beginElement(), delay * 1000);
+		return () => window.clearTimeout(timer);
+	}, [inView, reduceMotion, delay]);
 
 	return (
 		<span ref={ref} className={`water-reveal ${className}`}>
 			<svg className='water-reveal__filter' width='0' height='0' aria-hidden='true'>
-				<filter id={filterId} x='-30%' y='-80%' width='160%' height='260%' colorInterpolationFilters='sRGB'>
+				<filter
+					id={filterId}
+					x='-30%'
+					y='-80%'
+					width='160%'
+					height='260%'
+					colorInterpolationFilters='sRGB'
+				>
 					<feTurbulence
 						type='fractalNoise'
 						baseFrequency='0.008 0.075'
@@ -33,7 +47,15 @@ export function WaterReveal({ children, className = '', delay = 0 }: WaterReveal
 						yChannelSelector='G'
 					>
 						{animate && !reduceMotion && (
-							<animate attributeName='scale' from='34' to='0' dur='1.45s' fill='freeze' begin={`${delay}s`} />
+							<animate
+								ref={distortionRef}
+								attributeName='scale'
+								from='34'
+								to='0'
+								dur='1.45s'
+								fill='freeze'
+								begin='indefinite'
+							/>
 						)}
 					</feDisplacementMap>
 				</filter>
